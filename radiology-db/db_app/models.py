@@ -73,8 +73,6 @@ class Patient(models.Model):
     race = models.CharField(max_length=500)
     sex = models.CharField(max_length=10, choices=Sex.choices, default=Sex.NOT_REPORTED)
 
-
-
 class TreatmentCycle(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="treatment_cycles")
     cycle_number = models.IntegerField(default=1)
