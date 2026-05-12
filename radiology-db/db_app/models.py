@@ -95,24 +95,17 @@ class TumorInformation(models.Model):
 
 class ImagingStudy(models.Model):
     treatment_cycle = models.ForeignKey(TreatmentCycle, on_delete=models.CASCADE, related_name="imaging_studies")
-    age_at_imaging = models.IntegerField()
-    loinc_code = models.CharField(max_length=100)
     loinc_contrast = models.CharField(max_length=100)
-    loinc_modality = models.CharField(max_length=100)
     modality = models.CharField(choices=Modality.choices, max_length=100)
     year_of_study = models.DateField()
 
 class AbsorbedDose(models.Model):
     imaging_study = models.ForeignKey(ImagingStudy, on_delete=models.CASCADE, related_name="absorbed_dose_imaging")
     target = models.CharField(choices=Target.choices, max_length=100)
-    target_id = models.CharField(max_length=100)
     mean = models.DecimalField(max_digits=12,decimal_places=4)
-    stdev = models.DecimalField(max_digits=12,decimal_places=4)
-    d50 = models.DecimalField(max_digits=12,decimal_places=4)
     d90 = models.DecimalField(max_digits=12,decimal_places=4)
     lesion_vol = models.DecimalField(max_digits=12,decimal_places=4)
     dosimetry_method = models.CharField(max_length=100, choices=DosimetryMethod.choices)
-    software_used = models.CharField(max_length=100)
     time_activity_curve_fit = models.CharField(max_length=100)
 
 class ClinicalOutcome(models.Model):
@@ -121,20 +114,26 @@ class ClinicalOutcome(models.Model):
     progression_free_survival = models.IntegerField()
     overall_survival = models.IntegerField()
     toxicity_grade = models.CharField(choices=ToxicityGrade.choices, max_length=100)
-    toxicity_organ = models.CharField(choices=Target.choices, max_length=100)
     days_to_progression = models.IntegerField()
 
 class DicomFile(models.Model):
     imaging_study = models.ForeignKey(ImagingStudy, on_delete=models.CASCADE, related_name="dicom_files")
     file_name = models.CharField(max_length=200)
-    file_size = models.DecimalField(max_digits=12,decimal_places=4)
-    md5sum = models.CharField(max_length=200)
+    # https://docs.djangoproject.com/en/6.0/topics/http/file-uploads/
+    file = models.FileField(upload_to='dicom/', default=None)
     modality = models.CharField(choices=Modality.choices, max_length=50)
     series_description = models.CharField(max_length=500)
     manufacturer = models.CharField(max_length=200)
-    model_name = models.CharField(max_length=200)
-    software_version = models.CharField(max_length=200)
     collimator = models.CharField(max_length=200, default="NA")
     attenuation_correction = models.CharField(max_length=200, default="NA")
     convolution_kernel = models.CharField(max_length=200, default="NA")
-    energy_window = models.CharField(max_length=200, default="NA")
+
+
+
+'''
+TODO:
+- delete data
+- dicom upload + orm [DONE]
+- dicom viewer
+- make code prettier + cite
+'''
