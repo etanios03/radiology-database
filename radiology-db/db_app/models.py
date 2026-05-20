@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 # enumeration for patient sex
 class Sex(models.TextChoices):
@@ -13,19 +12,19 @@ class Therapy(models.TextChoices):
     ALPHA = 'A', 'Alpha'
     BETA = 'B', 'Beta'
     AUGER = 'E', 'Auger Electron'
-    NOT_REPORTED = 'NR', 'Not Reported'
+    NOT_REPORTED ='NR', 'Not Reported'
 
 class OtherTherapyType(models.TextChoices):
-    HORMONE  = 'hormone_therapy', 'Hormone Therapy'
-    CHEMO  = 'chemotherapy', 'Chemotherapy'
+    HORMONE = 'hormone_therapy', 'Hormone Therapy'
+    CHEMO = 'chemotherapy', 'Chemotherapy'
     IMMUNO = 'immunotherapy', 'Immunotherapy'
     RADIATION = 'system_radiation_therapy', 'Systemic Radiation Therapy'
-    LIVER_DIR = 'liver_directed_therapy',  'Liver Directed Therapy'
+    LIVER_DIR = 'liver_directed_therapy', 'Liver Directed Therapy'
 
 class Target(models.TextChoices):
     LIVER = 'liver', 'Liver'
     KIDNEYS = 'kidneys', 'Kidneys'
-    MARROW  = 'marrow', 'Marrow'
+    MARROW = 'marrow', 'Marrow'
     SALIVARY_GLANDS = 'salivary_glands', 'Salivary Glands'
     LUNGS  = 'lungs', 'Lungs'
     SPLEEN = 'spleen', 'Spleen'
@@ -33,30 +32,30 @@ class Target(models.TextChoices):
     LESION = 'lesion', 'Lesion'
 
 class Modality(models.TextChoices):
-    PET   = 'PET',   'PET'
-    CT    = 'CT',    'CT'
-    SPECT = 'SPECT', 'SPECT'
-    MRI   = 'MRI',   'MRI'
+    PET = 'PET', 'PET'
+    CT = 'CT', 'CT'
+    SPECT = 'SPECT','SPECT'
+    MRI = 'MRI', 'MRI'
 
 class DosimetryMethod(models.TextChoices):
-    MIRD  = 'MIRD',            'MIRD'
+    MIRD = 'MIRD', 'MIRD'
     VOXEL = 'voxel_dosimetry', 'Voxel Dosimetry'
-    MC    = 'monte_carlo',     'Monte Carlo'
-    OTHER = 'Other',           'Other'
+    MC = 'monte_carlo', 'Monte Carlo'
+    OTHER = 'Other', 'Other'
 
 class Response(models.TextChoices):
-    COMPLETE    = 'complete_response',  'Complete Response'
-    PARTIAL     = 'partial_response',   'Partial Response'
-    STABLE      = 'stable_disease',     'Stable Disease'
+    COMPLETE = 'complete_response', 'Complete Response'
+    PARTIAL = 'partial_response', 'Partial Response'
+    STABLE = 'stable_disease', 'Stable Disease'
     PROGRESSIVE = 'progressive_disease','Progressive Disease'
-    NA          = 'not_evaluable',      'Not Evaluable'
+    NA = 'not_evaluable', 'Not Evaluable'
 
 class ToxicityGrade(models.TextChoices):
-    ONE   = 'grade_1', 'Grade 1'
-    TWO   = 'grade_2', 'Grade 2'
+    ONE= 'grade_1', 'Grade 1'
+    TWO = 'grade_2', 'Grade 2'
     THREE = 'grade_3', 'Grade 3'
-    FOUR  = 'grade_4', 'Grade 4'
-    FIVE  = 'grade_5', 'Grade 5'
+    FOUR = 'grade_4', 'Grade 4'
+    FIVE= 'grade_5', 'Grade 5'
 
 class Patient(models.Model):
     submitter_id = models.CharField(max_length=500)
@@ -127,13 +126,3 @@ class DicomFile(models.Model):
     collimator = models.CharField(max_length=200, default="NA")
     attenuation_correction = models.CharField(max_length=200, default="NA")
     convolution_kernel = models.CharField(max_length=200, default="NA")
-
-
-
-'''
-TODO:
-- delete data
-- dicom upload + orm [DONE]
-- dicom viewer
-- make code prettier + cite
-'''

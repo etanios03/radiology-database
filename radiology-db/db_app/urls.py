@@ -1,11 +1,12 @@
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 # https://docs.djangoproject.com/en/6.0/topics/templates/
 urlpatterns = [
     # patients at index
     path('', views.index, name='index'),
-
+    path('dicom/<int:dicom_id>/view/', views.view_dicom, name='view_dicom'),
     # had an issue with matching the url: need the patients/new (less specific) to be first
     # https://www.mostlypython.com/does-order-matter-in-urlspy/
     path('patients/new/', views.create_patient, name='create_patient'),
@@ -20,3 +21,4 @@ urlpatterns = [
     path('clinical-outcomes/new/', views.create_clinical_outcome, name='create_clinical_outcome'),
     path('dicom/new/', views.create_dicom, name='create_dicom'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
