@@ -2,7 +2,8 @@ import numpy as np
 import pydicom
 from skimage.filters import threshold_otsu
 import asyncio
-from pydicom.dataset import FileDataset # return type for pydicom 
+# return type for pydicom for typing
+from pydicom.dataset import FileDataset 
 
 
 def thread_load_dicom(dicom_path: str) -> tuple[FileDataset, np.ndarray]:
