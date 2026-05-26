@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}DICOM Viewer — {{dicom.file_name}}{% endblock %}
+
+{% block content %}
+<a class="back-link" href="/patients/{{ dicom.imaging_study.treatment_cycle.patient.subject_id }}/">&larr; Back to Patient</a>
+<h2>DICOM Viewer: {{ dicom.file_name }}</h2>
+
+<div style="display: flex; gap: 50px; align-items: flex-start; flex-wrap: wrap;">
+
+    <div>
+        <img src="data:image/png;base64,{{ img_b64 }}"
+             style="max-width: 500px; border: 1px solid #ccc; display: block;">
+    </div>
+
+    <div style="flex: 1; min-width: 300px;">
+        <h3>Metadata</h3>
+        <table>
+            <tbody>
+                <tr><td><strong>Patient ID</strong></td><td>{{ meta.patient_id }}</td></tr>
+                <tr><td><strong>Modality</strong></td><td>{{ meta.modality }}</td></tr>
+                <tr><td><strong>Study Description</strong></td><td>{{ meta.study_description }}</td></tr>
+                <tr><td><strong>Manufacturer</strong></td><td>{{ meta.manufacturer }}</td></tr>
+                <tr><td><strong>Slice Thickness</strong></td><td>{{ meta.slice_thickness }}</td></tr>
+                <tr><td><strong>Pixel Spacing</strong></td><td>{{ meta.pixel_spacing }}</td></tr>
+                <tr><td><strong>Rows</strong></td><td>{{ meta.rows }}</td></tr>
+                <tr><td><strong>Columns</strong></td><td>{{ meta.columns }}</td></tr>
+                <tr><td><strong>Bits Allocated</strong></td><td>{{ meta.bits_allocated }}</td></tr>
+                <tr><td><strong>Window Center</strong></td><td>{{ meta.window_center }}</td></tr>
+                <tr><td><strong>Window Width</strong></td><td>{{ meta.window_width }}</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top: 30px;">Lesion Segmentation</h3>
+        <form method="post">
+            <button type="submit" name="run_segmentation" value="1" style="
+                background: #a4d5f1;
+                color: #000000;
+                border: 1px solid #000000;
+                border-radius: 25px;
+                padding: 10px 20px;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                cursor: pointer;
+            ">Calculate Lesion Volume</button>
+        </form>
+
+        {% if seg %}
+        <div style="margin-top: 20px; padding: 15px; border: 1px solid #4caf50; background: #f1fff1; font-size: 13px;">
+            <strong>Segmentation Result</strong><br><br>
+            Lesion Volume: <strong>{{ seg.lesion_volume_mL }} mL</strong><br>
+            Voxel Volume: {{ seg.voxel_volume }} mm^3<br>
+            Threshold: {{ seg.otsu_threshold }}<br>
+            Slice Thickness: {{ seg.slice_thickness_mm }} mm
+        </div>
+        {% endif %}
+
+        {% if seg_error %}
+        <p style="color: red; margin-top: 12px; font-size: 13px;">Segmentation failed: {{ seg_error }}</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

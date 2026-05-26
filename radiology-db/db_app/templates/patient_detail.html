@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Patient {{patient.subject_id }}{% endblock %}
+
+{% block content %}
+<a class="back-link" href="/">&larr; Back to Patient Registry</a>
+<h2>Patient: {{ patient.subject_id }}</h2>
+<div class="patient-meta">
+    <span><strong>Submitter ID:</strong> {{patient.submitter_id}}</span>
+    <span><strong>Sex:</strong> {{patient.sex}}</span>
+    <span><strong>Race:</strong> {{patient.race}}</span>
+    <span><strong>Country:</strong> {{patient.residence_country}}</span>
+    <span><strong>Age:</strong> {{patient.age}}</span>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Treatment Cycles</h3>
+    <a class="add-link" href="/treatment-cycles/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cycle Num</th>
+                <th>Radiopharmaceutical</th>
+                <th>Therapy Type</th>
+                <th>Net Injected Activity (MBq)</th>
+                <th>Target</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cycles %}
+            <tr>
+                <td>{{c.id }}</td>
+                <td>{{c.cycle_number}}</td>
+                <td>{{c.radiopharmaceutical }}</td>
+                <td>{{c.get_therapy_type_display}}</td>
+                <td>{{c.net_injected_activity}}</td>
+                <td>{{c.get_therapeutic_target_display}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Therapy Treatments</h3>
+    <a class="add-link" href="/therapy-treatments/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Therapy Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Time Between RPT</th>
+                <th>Pre Tumor Vol</th>
+                <th>Post Tumor Vol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in therapies %}
+            <tr>
+                <td>{{t.id }}</td>
+                <td>{{t.get_therapy_type_display}}</td>
+                <td>{{t.start_therapy_date}}</td>
+                <td>{{t.end_therapy_date}}</td>
+                <td>{{t.time_between_rpt_other }}</td>
+                <td>{{t.pre_tumor_volume}}</td>
+                <td>{{t.post_tumor_volume}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Tumor Information</h3>
+    <a class="add-link" href="/tumor-information/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tumor Site</th>
+                <th>AJCC Stage</th>
+                <th>Grade</th>
+                <th>Liver Mets</th>
+                <th>Ki-67</th>
+                <th>PET Tumor Vol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tumors %}
+            <tr>
+                <td>{{t.id }}</td>
+                <td>{{t.tumor_site}}</td>
+                <td>{{t.ajcc_stage}}</td>
+                <td>{{t.tumor_grade}}</td>
+                <td>{{t.liver_mets|yesno:"Yes,No" }}</td>
+                <td>{{t.ki_67 }}</td>
+                <td>{{t.pet_tumor_vol }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Imaging Studies</h3>
+    <a class="add-link" href="/imaging-studies/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Treatment Cycle</th>
+                <th>Contrast (LOINC)</th>
+                <th>Modality</th>
+                <th>Year of Study</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in studies %}
+            <tr>
+                <td>{{s.id}}</td>
+                <td>{{ s.treatment_cycle}}</td>
+                <td>{{s.loinc_contrast}}</td>
+                <td>{{s.get_modality_display }}</td>
+                <td>{{s.year_of_study }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Absorbed Doses</h3>
+    <a class="add-link" href="/absorbed-doses/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imaging Study</th>
+                <th>Target</th>
+                <th>Mean Dose (Gy)</th>
+                <th>D90</th>
+                <th>Lesion Vol</th>
+                <th>Dosimetry Method</th>
+                <th>TAC Fit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in doses %}
+            <tr>
+                <td>{{d.id}}</td>
+                <td>{{d.imaging_study}}</td>
+                <td>{{d.get_target_display}}</td>
+                <td>{{ d.mean}}</td>
+                <td>{{d.d90}}</td>
+                <td>{{d.lesion_vol}}</td>
+                <td>{{d.get_dosimetry_method_display}}</td>
+                <td>{{d.time_activity_curve_fit}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="10">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>Clinical Outcomes</h3>
+    <a class="add-link" href="/clinical-outcomes/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Treatment Response</th>
+                <th>PFS (days)</th>
+                <th>OS (days)</th>
+                <th>Toxicity Grade</th>
+                <th>Days to Progression</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in outcomes %}
+            <tr>
+                <td>{{o.id}}</td>
+                <td>{{o.get_treatment_response_display}}</td>
+                <td>{{o.progression_free_survival}}</td>
+                <td>{{o.overall_survival}}</td>
+                <td>{{o.get_toxicity_grade_display}}</td>
+                <td>{{o.days_to_progression}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="section-block">
+    <h3>DICOM Files</h3>
+    <a class="add-link" href="/dicom/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imaging Study</th>
+                <th>File Name</th>
+                <th>Modality</th>
+                <th>Description</th>
+                <th>Manufacturer</th>
+                <th>Collimator</th>
+                <th>Attenuation Corr</th>
+                <th>Convol. Kernel</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in dicoms %}
+            <tr>
+                <td>{{d.id }}</td>
+                <td>{{d.imaging_study }}</td>
+                <td><a href="/dicom/{{ d.id }}/view/">{{ d.file_name }}</a></td>
+                <td>{{d.get_modality_display}}</td>
+                <td>{{d.series_description}}</td>
+                <td>{{d.manufacturer}}</td>
+                <td>{{d.collimator}}</td>
+                <td>{{d.attenuation_correction}}</td>
+                <td>{{d.convolution_kernel}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="10">No records found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
