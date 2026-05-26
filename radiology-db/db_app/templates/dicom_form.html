@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Create DICOM File{% endblock %}
+
+{% block content %}
+<a class="back-link" href="/">&larr; Back to Patient Registry</a>
+<h2>Create DICOM File</h2>
+
+{% if file_label %}
+    {% if file_label_ok %}
+        <p style="color: #1a6e38; margin-bottom: 15px;">&#10003; {{ file_label }}</p>
+    {% else %}
+        <p style="color: #c0392b; margin-bottom: 15px;">{{ file_label }}</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" style="max-width: 600px;">
+    {% if not saved_path %}
+        <p style="color: #888; font-size: 12px; margin-bottom: 20px;">
+            Select DICOM file to auto-fill in the fields!
+        </p>
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save</button>
+    {% else %}
+        <input type="hidden" name="saved_path" value="{{ saved_path }}">
+        {% for field in form %}
+            {% if field.name != 'file' %}
+                <p>{{ field.label_tag }} {{ field }} {{ field.errors }}</p>
+            {% endif %}
+        {% endfor %}
+        <button type="submit" class="btn">Save</button>
+    {% endif %}
+</form>
+
+<script>
+    const fileInput = document.querySelector('input[type=file]');
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'autofill';
+            hidden.value = '1';
+            this.form.appendChild(hidden);
+            this.form.submit();
+        });
+    }
+</script>
+
+{% endblock %}

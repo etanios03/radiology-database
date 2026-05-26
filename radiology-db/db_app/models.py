@@ -96,7 +96,7 @@ class ImagingStudy(models.Model):
     treatment_cycle = models.ForeignKey(TreatmentCycle, on_delete=models.CASCADE, related_name="imaging_studies")
     loinc_contrast = models.CharField(max_length=100)
     modality = models.CharField(choices=Modality.choices, max_length=100)
-    year_of_study = models.DateField()
+    year_of_study = models.IntegerField()
 
 class AbsorbedDose(models.Model):
     imaging_study = models.ForeignKey(ImagingStudy, on_delete=models.CASCADE, related_name="absorbed_dose_imaging")

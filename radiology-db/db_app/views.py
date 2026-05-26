@@ -197,8 +197,8 @@ def create_dicom(request: HttpRequest) -> HttpResponse:
                     form = DicomForm(initial=initial)
                     # this should be carrying the file path for the next submission
                     # so shouldn't need to reupload, but we have to anyway....? fix bug
-                    saved_path_field = f'<input type="hidden" name="saved_path" value="{saved_path}">'
-                    file_label = f'<p style="color:green;">✓ File uploaded: <strong>{uploaded_file.name}</strong></p>'
+                    saved_path_field = saved_path
+                    file_label = uploaded_file.name
                 # file upload and autofill failed
                 except Exception as e:
                     form = DicomForm()
@@ -210,18 +210,13 @@ def create_dicom(request: HttpRequest) -> HttpResponse:
                 saved_path_field = ''
                 file_label = ''
 
-            html = f"""
-            <html><body>
-                <h2>Create DICOM File</h2>
-                {file_label}
-                <form method="post" enctype="multipart/form-data">
-                    {saved_path_field}
-                    {form.as_p()}
-                    <button type="submit">Save</button>
-                </form>
-            </body></html>
-            """
-            return HttpResponse(html)
+            return render(request, 'dicom_form.html', {
+                'form': form,
+                'title': 'Create DICOM File',
+                'saved_path': saved_path_field,
+                'file_label': file_label,
+                'file_label_ok': uploaded_file is not None and saved_path_field != '',
+            })
         # Save data from form (final sub of form)
         else:
             # check if file is already saved to "media" 
@@ -230,6 +225,8 @@ def create_dicom(request: HttpRequest) -> HttpResponse:
                 # build POST data with the file field pointing to saved path
                 post_data = request.POST.copy()
                 form = DicomForm(post_data, request.FILES)
+                # the file is saved on disk!! so we dont need to check it again
+                form.fields['file'].required = False
                 if form.is_valid():
                     instance = form.save(commit=False)
                     # if the file is already there then just use the saved one
@@ -250,20 +247,10 @@ def create_dicom(request: HttpRequest) -> HttpResponse:
     # https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Sending_forms_through_JavaScript
     # using javascript to submit the form after the file is uploaded in order to autopopulate
     # "autofill" is sent so that in our create_dicom function, we can fill out the other sections
-    html = f"""
-    <html><body>
-        <h2>Create DICOM File</h2>
-        <p style="color:gray;">Upload a .dcm file to auto-populate fields, then fill in any remaining fields and save.</p>
-        <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="autofill" value="1">
-            {form.as_p()}
-            <button type="submit">Load DICOM Tags</button>
-        </form>
-        <script>
-            document.querySelector('input[type=file]').addEventListener('change', function() {{
-                this.form.submit();
-            }});
-        </script>
-    </body></html>
-    """
-    return HttpResponse(html)
+    return render(request, 'dicom_form.html', {
+        'form': form,
+        'title': 'Create DICOM File',
+        'saved_path': '',
+        'file_label': '',
+        'file_label_ok': False,
+    })

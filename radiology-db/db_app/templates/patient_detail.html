@@ -45,6 +45,73 @@
         </tbody>
     </table>
 </div>
+<hr> 
+<div class="section-block">
+    <h3>Imaging Studies</h3>
+    <a class="add-link" href="/imaging-studies/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Treatment Cycle</th>
+                <th>Contrast (LOINC)</th>
+                <th>Modality</th>
+                <th>Year of Study</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in studies %}
+            <tr>
+                <td>{{s.id}}</td>
+                <td>{{ s.treatment_cycle}}</td>
+                <td>{{s.loinc_contrast}}</td>
+                <td>{{s.get_modality_display }}</td>
+                <td>{{s.year_of_study }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="5">No records</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+<div class="section-block">
+    <h3>DICOM Files</h3>
+    <a class="add-link" href="/dicom/new/">+ Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imaging Study</th>
+                <th>File Name</th>
+                <th>Modality</th>
+                <th>Description</th>
+                <th>Manufacturer</th>
+                <th>Collimator</th>
+                <th>Attenuation Corr</th>
+                <th>Convol. Kernel</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in dicoms %}
+            <tr>
+                <td>{{d.id }}</td>
+                <td>{{d.imaging_study }}</td>
+                <td><a href="/dicom/{{ d.id }}/view/">{{ d.file_name }}</a></td>
+                <td>{{d.get_modality_display}}</td>
+                <td>{{d.series_description}}</td>
+                <td>{{d.manufacturer}}</td>
+                <td>{{d.collimator}}</td>
+                <td>{{d.attenuation_correction}}</td>
+                <td>{{d.convolution_kernel}}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row"><td colspan="10">No records found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <hr>
 
@@ -108,37 +175,6 @@
                 <td>{{t.liver_mets|yesno:"Yes,No" }}</td>
                 <td>{{t.ki_67 }}</td>
                 <td>{{t.pet_tumor_vol }}</td>
-            </tr>
-            {% empty %}
-            <tr class="empty-row"><td colspan="5">No records</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<hr>
-
-<div class="section-block">
-    <h3>Imaging Studies</h3>
-    <a class="add-link" href="/imaging-studies/new/">+ Add</a>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Treatment Cycle</th>
-                <th>Contrast (LOINC)</th>
-                <th>Modality</th>
-                <th>Year of Study</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for s in studies %}
-            <tr>
-                <td>{{s.id}}</td>
-                <td>{{ s.treatment_cycle}}</td>
-                <td>{{s.loinc_contrast}}</td>
-                <td>{{s.get_modality_display }}</td>
-                <td>{{s.year_of_study }}</td>
             </tr>
             {% empty %}
             <tr class="empty-row"><td colspan="5">No records</td></tr>
@@ -219,41 +255,6 @@
 
 <hr>
 
-<div class="section-block">
-    <h3>DICOM Files</h3>
-    <a class="add-link" href="/dicom/new/">+ Add</a>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Imaging Study</th>
-                <th>File Name</th>
-                <th>Modality</th>
-                <th>Description</th>
-                <th>Manufacturer</th>
-                <th>Collimator</th>
-                <th>Attenuation Corr</th>
-                <th>Convol. Kernel</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for d in dicoms %}
-            <tr>
-                <td>{{d.id }}</td>
-                <td>{{d.imaging_study }}</td>
-                <td><a href="/dicom/{{ d.id }}/view/">{{ d.file_name }}</a></td>
-                <td>{{d.get_modality_display}}</td>
-                <td>{{d.series_description}}</td>
-                <td>{{d.manufacturer}}</td>
-                <td>{{d.collimator}}</td>
-                <td>{{d.attenuation_correction}}</td>
-                <td>{{d.convolution_kernel}}</td>
-            </tr>
-            {% empty %}
-            <tr class="empty-row"><td colspan="10">No records found</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
 
 {% endblock %}
