@@ -2,8 +2,10 @@ import numpy as np
 import pydicom
 from skimage.filters import threshold_otsu
 import asyncio
+from pydicom.dataset import FileDataset # return type for pydicom 
 
-def thread_load_dicom(dicom_path: str):
+
+def thread_load_dicom(dicom_path: str) -> tuple[FileDataset, np.ndarray]:
     ds = pydicom.dcmread(dicom_path)
     pixel_array = ds.pixel_array.astype(float)
      # https://pydicom.github.io/pydicom/1.1/working_with_pixel_data.html
@@ -16,7 +18,7 @@ def thread_load_dicom(dicom_path: str):
     pixel_array = pixel_array * slope + intercept
     return ds, pixel_array
     
-def thread_segment_dicom(dicom_path: str) -> dict:
+def thread_segment_dicom(dicom_path: str) -> dict[str, float]:
     # https://scikit-image.org/docs/stable/auto_examples/segmentation/plot_thresholding.html
     # gets the optimal threshold by maximizing the variance between two classes of pixels, 
     # which are separated by the threshold (pixel intensity)
@@ -35,10 +37,10 @@ def thread_segment_dicom(dicom_path: str) -> dict:
         'otsu_threshold': round(float(thresh), 3)
     }
 
-async def load_dicom(dicom_path: str):
+async def load_dicom(dicom_path: str) -> tuple[FileDataset, np.ndarray]:
     return await asyncio.to_thread(thread_load_dicom, dicom_path)
 
-async def segment_dicom(dicom_path: str) -> dict:
+async def segment_dicom(dicom_path: str) -> dict[str, float]:
     return await asyncio.to_thread(thread_segment_dicom, dicom_path)
     
     
