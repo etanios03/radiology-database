@@ -22,11 +22,6 @@ from typing import Any
 # python manage.py runserver
 # uvicorn db_project.asgi:application --reload
 
-'''
-tests: for algorithm (put before async refactoring), django test for views 
-(see testing framework) test the context for the rendering of templates
-templates ** good for testing
-'''
 
 # https://pydicom.github.io/pydicom/stable/index.html
 # https://pydicom.github.io/pydicom/1.1/working_with_pixel_data.html

@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # enumeration for patient sex
 class Sex(models.TextChoices):
     FEMALE = 'F', 'Female'
