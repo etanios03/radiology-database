@@ -12,9 +12,18 @@ Run "uv sync" to download all dependencies
 Example DICOM file data for upload is located in the mock_data/ folder 
 
 <h3>Usage Example</h3>
-Click the "add patient" button to add patient data and fill out the form.
+Click the "add patient" button to add patient data and fill out the form.\
 
 When the name of the patient is clicked, the patient detail page shows. This page contains all the data tables, including the Treatment Cycles, Imaging Studies, DICOM file metadata, Absorbed Dose, and Clinical Outcomes. 
 
 DICOM files from the mock_data folder can be uploaded into the DICOM table. Upload the scan first so that the form auto-populates, then add the imaging study. Afterwards, clicking on the image link in the patient-detail page will show the scan. 
+
+<h3>File Structure</h3>
+
+views.py: contains the index, add_patient page, patient_detail page, and DICOM_viewer page
+
+models.py: contains the models for the database. 
+![Data Structure](db_models.png)
+
+segmentation.py: contains the async segmentation function for the DICOM files, using a binary mask algorithm to get tumor voxels
 
