@@ -9,6 +9,8 @@ In the future, I intend to create a pipeline so that the absorbed dose can be ca
 <h3>Set Up</h3>
 Run "uv sync" to download all dependencies
 
+After activating the virtual env, run "uv run uvicorn db_project.asgi:application --reload"
+
 Example DICOM file data for upload is located in the mock_data/ folder 
 
 <h3>Usage Example</h3>
