@@ -12,7 +12,7 @@ Run "uv sync" to download all dependencies
 Example DICOM file data for upload is located in the mock_data/ folder 
 
 <h3>Usage Example</h3>
-Click the "add patient" button to add patient data and fill out the form.\
+Click the "add patient" button to add patient data and fill out the form.
 
 When the name of the patient is clicked, the patient detail page shows. This page contains all the data tables, including the Treatment Cycles, Imaging Studies, DICOM file metadata, Absorbed Dose, and Clinical Outcomes. 
 
