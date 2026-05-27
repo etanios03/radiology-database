@@ -8,10 +8,14 @@ In the future, I intend to create a pipeline so that the absorbed dose can be ca
 
 <h3>Set Up</h3>
 1. cd to radiology-db
+
 2. Run "uv sync" to download all dependencies
-3. Activate virtual env 
-4. python manage.py migrate
-5. Run "uv run uvicorn db_project.asgi:application --reload"
+   
+4. Activate virtual env
+   
+6. python manage.py migrate
+   
+8. Run "uv run uvicorn db_project.asgi:application --reload"
 
 Example DICOM file data for upload is located in the mock_data/ folder 
 
