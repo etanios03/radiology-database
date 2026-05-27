@@ -7,9 +7,11 @@ This web server is intended to be a centralized database for these DICOM scans t
 In the future, I intend to create a pipeline so that the absorbed dose can be calculated and used to train predictive models. These predictive models will help determine optimized treatment over time so that patients do not have as much of a burden in scanning. 
 
 <h3>Set Up</h3>
-Run "uv sync" to download all dependencies
-
-After activating the virtual env, run "uv run uvicorn db_project.asgi:application --reload"
+1. cd to radiology-db
+2. Run "uv sync" to download all dependencies
+3. Activate virtual env 
+4. python manage.py migrate
+5. Run "uv run uvicorn db_project.asgi:application --reload"
 
 Example DICOM file data for upload is located in the mock_data/ folder 
 
